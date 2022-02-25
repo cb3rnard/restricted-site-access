@@ -17,7 +17,6 @@
     "cypress:run": "cypress run --config-file tests/cypress/config.json",
     "create-pages": "wp-env run tests-cli \"wp post create --post_type=page --post_title='Accessible page' --post_status='publish'\" && wp-env run tests-cli \"wp post create --post_type=page --post_title='Page to redirect' --post_status='publish'\""
   },
-  "author": "10up <sales@10up.com>",
-  "license": "GPLv2 (or later)",
-  "dependencies": {}
+  "author": "10up <opensource@10up.com>",
+  "license": "GPLv2 (or later)"
 }
