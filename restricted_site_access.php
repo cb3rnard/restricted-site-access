@@ -14,7 +14,7 @@
 
 define( 'RSA_VERSION', '7.2.0' );
 
-require_once WP_PLUGIN_DIR . '/restricted-site-access/vendor/autoload.php';
+require_once dirname(__FILE__) . '/vendor/autoload.php';
 
 /**
  * Class responsible for all plugin funcitonality.
@@ -81,6 +81,12 @@ class Restricted_Site_Access {
 	 */
 	public static function add_actions() {
 		self::$basename = plugin_basename( __FILE__ );
+
+		add_action('init', function() {
+			if(function_exists('wpsc_add_plugin')) {
+				do_action('wpsc_add_plugin', '../app/plugins/restricted-site-access/wpsc-cache-user-check.php');
+			}
+		});
 
 		add_action( 'parse_request', array( __CLASS__, 'restrict_access' ), 1 );
 		add_action( 'admin_init', array( __CLASS__, 'admin_init' ), 1 );
@@ -236,6 +242,7 @@ class Restricted_Site_Access {
 				$options[ $field_name ] = $field_details['default'];
 			}
 		}
+		$options['redirect_url'] = RSA_REDIRECT ?? $options['redirect_url'];
 
 		return $options;
 	}
@@ -368,7 +375,7 @@ class Restricted_Site_Access {
 		}
 
 		// check for the allow list, if its empty block everything.
-		if ( count( $allowed_ips ) > 0 ) {
+		if ( count( $allowed_ips ) > 0  && RSA_IP_AUTHORIZED ==! true) {
 			$remote_ip = self::get_client_ip_address();
 
 			// iterate through the allow list.
