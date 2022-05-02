@@ -375,7 +375,10 @@ class Restricted_Site_Access {
 		}
 
 		// check for the allow list, if its empty block everything.
-		if ( count( $allowed_ips ) > 0  && RSA_IP_AUTHORIZED ==! true) {
+		if(RSA_IP_AUTHORIZED === true) {
+			return;
+		} 
+		elseif ( count( $allowed_ips ) > 0) {
 			$remote_ip = self::get_client_ip_address();
 
 			// iterate through the allow list.

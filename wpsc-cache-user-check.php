@@ -111,6 +111,7 @@ class WSCUserCheck {
 	    $results = self::restrict_access_check( $wp );
 
 	    if ( is_array( $results ) && ! empty( $results ) ) {
+
 	        /**
 	         * This conditional prevents a redirect loop if the redirect URL
 	         * belongs to the same domain.
