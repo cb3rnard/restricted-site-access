@@ -352,6 +352,6 @@ class CacheOverride {
 }
 
 // && (function_exists('wpsc_get_auth_cookies') || defined('W3TC') ) 
-if(WP_CACHE === true && defined('RSA_FORCE_RESTRICTION') && RSA_FORCE_RESTRICTION === true defined('RSA_REDIRECT') && RSA_FORCE_RESTRICTION === true && defined('RSA_LOGIN_URL') && RSA_LOGIN_URL === true) {
+if(WP_CACHE === true && defined('RSA_FORCE_RESTRICTION') && RSA_FORCE_RESTRICTION === true && defined('RSA_REDIRECT') && RSA_FORCE_RESTRICTION === true && defined('RSA_LOGIN_URL') && RSA_LOGIN_URL === true) {
 	CacheOverride::get_instance();
 }
