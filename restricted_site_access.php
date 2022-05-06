@@ -1775,7 +1775,10 @@ class Restricted_Site_Access {
 	}
 
 	public static function remove_rsa_logged_cookie() {
-	    setcookie( 'rsa_logged_in', '', -1000000 );
+		if (isset($_COOKIE['rsa_logged_in'])) {
+			unset($_COOKIES['rsa_logged_in']);
+		    setcookie( 'rsa_logged_in', null, time() -31556952, COOKIEPATH );
+		}
 	}
 }
 
