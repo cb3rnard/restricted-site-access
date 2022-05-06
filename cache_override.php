@@ -1,8 +1,10 @@
 <?php
+namespace RSA;
+
 require_once dirname(__FILE__) . '/vendor/autoload.php';
 // require_once dirname(__FILE__) . '/restricted_site_access.php';
 
-class WSCUserCheck {
+class CacheOverride {
 	/**
 	 * Plugin options.
 	 *
@@ -91,9 +93,9 @@ class WSCUserCheck {
 		$options = array();
 
 		$options = [
-			'redirect_url' => RSA_REDIRECT ?? '',
-			'approach' => RSA_REDIRECT !== null ? 2 : 1,
-			'allowed' => RSA_IP_WHITELIST !== null ? explode('|', RSA_IP_WHITELIST) : ''
+			'redirect_url' => defined('RSA_REDIRECT') ? RSA_REDIRECT : '',
+			'approach' => defined('RSA_REDIRECT') ? 2 : 1,
+			'allowed' => defined('RSA_IP_WHITELIST') ? explode('|', RSA_IP_WHITELIST) : ''
 		];
 
 		// Fill in defaults where values aren't set.
@@ -107,8 +109,7 @@ class WSCUserCheck {
 	}
 
 	public static function restrict_access(){
-	    global $wp;
-	    $results = self::restrict_access_check( $wp );
+	    $results = self::restrict_access_check();
 
 	    if ( is_array( $results ) && ! empty( $results ) ) {
 
@@ -129,6 +130,12 @@ class WSCUserCheck {
 
 			// Don't redirect during unit tests.
 			if ( ! empty( $results['url'] ) && ! defined( 'PHP_UNIT_TESTS_ENV' ) ) {
+				if(function_exists('w3tc_config')) {
+					define('DONOTCACHEPAGE', true);
+				} else {
+					define('WPSC_SERVE_DISABLED', true);
+					return;
+				}
 				header( 'Location: ' . $results['url'], true, $results['code'] ); // phpcs:ignore WordPress.Security.SafeRedirect.wp_redirect_wp_redirect
 				die();
 			}
@@ -140,7 +147,7 @@ class WSCUserCheck {
 	    }
 	}
 
-	public static function restrict_access_check($wp) {
+	public static function restrict_access_check() {
 	    self::$rsa_options = self::get_options();
 	    $is_restricted     = self::is_restricted();
 
@@ -159,7 +166,6 @@ class WSCUserCheck {
 	    ) {
 	        $allowed_ips = array_merge( $allowed_ips, self::$rsa_options['allowed'] );
 	    }
-
 	    // check for the allow list, if its empty block everything.
 	    if ( count( $allowed_ips ) > 0 ) {
 	        $remote_ip = self::get_client_ip_address();
@@ -180,7 +186,6 @@ class WSCUserCheck {
 	                 * @param string $remote_ip The remote IP address being checked.
 	                 * @param string $line      The matched masked IP address.
 	                 */
-    				define('RSA_IP_AUTHORIZED', true);
 	                return;
 	            }
 	        }
@@ -192,8 +197,7 @@ class WSCUserCheck {
             if ( ! empty( self::$rsa_options['redirect_url'] ) ) {
         		$url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
                 $redirect_url_domain = self::$rsa_options['redirect_url'];
-                if($url == $redirect_url) {
-                	print_r('hellooo');
+                if($url == self::$rsa_options['redirect_url']) {
                 	return;
                 }
             }
@@ -214,11 +218,27 @@ class WSCUserCheck {
 	protected static function is_restricted() {
 		$blog_public = RSA_FORCE_RESTRICTION ? 2 : 1;
 
-		$user_check = count(wpsc_get_auth_cookies());
+		$user_check = false;
+		if(!empty($_COOKIE['rsa_logged_in']) && defined('RSA_LOGGED_HASH') && RSA_LOGGED_HASH !== false) {
+			$cookie_content = $_COOKIE['rsa_logged_in'];
+			list($signature, $user_name, $expire) = explode(':', $cookie_content);
+		    $msgMAC = mb_substr($cookie_content, 0, 64, '8bit');
+		    $message = mb_substr($cookie_content, 64, null, '8bit');
+		    $check_hash = hash_equals(
+		        hash_hmac('sha256', $message, RSA_LOGGED_HASH),
+		        $msgMAC
+		    );
+		    $check_time = $expire > time();
+			$user_check = ($check_time && $check_hash);
+		}
 		
     	$url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
-		$is_login = preg_match ('#^/'. RSA_LOGIN_URL . '/#', $_SERVER['REQUEST_URI']);
 
+    	$is_login = false;
+    	if(defined('RSA_LOGIN_URL')) {
+    		$is_login = strpos($_SERVER['REQUEST_URI'], '/'. RSA_LOGIN_URL);
+			$is_login = $is_login === false ? $is_login : true;
+    	}
 		$checks = is_admin() || $is_login || $user_check || 2 !== (int) $blog_public || ( defined( 'WP_INSTALLING' ) && isset( $_GET['key'] ) ); // phpcs:ignore WordPress.Security.NonceVerification
 
 		return ! $checks;
@@ -331,6 +351,7 @@ class WSCUserCheck {
 	}
 }
 
-if(RSA_FORCE_RESTRICTION && WP_CACHE === true && function_exists('wpsc_get_auth_cookies')) {
-	WSCUserCheck::get_instance();
+// && (function_exists('wpsc_get_auth_cookies') || defined('W3TC') ) 
+if(WP_CACHE === true && defined('RSA_FORCE_RESTRICTION') && RSA_FORCE_RESTRICTION === true defined('RSA_REDIRECT') && RSA_FORCE_RESTRICTION === true && defined('RSA_LOGIN_URL') && RSA_LOGIN_URL === true) {
+	CacheOverride::get_instance();
 }

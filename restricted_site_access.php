@@ -16,6 +16,7 @@ define( 'RSA_VERSION', '7.2.0' );
 
 require_once dirname(__FILE__) . '/vendor/autoload.php';
 
+
 /**
  * Class responsible for all plugin funcitonality.
  */
@@ -82,11 +83,16 @@ class Restricted_Site_Access {
 	public static function add_actions() {
 		self::$basename = plugin_basename( __FILE__ );
 
+		/* WP SUPER CACHE OVERRIDE */
 		add_action('init', function() {
 			if(function_exists('wpsc_add_plugin')) {
-				do_action('wpsc_add_plugin', '../app/plugins/restricted-site-access/wpsc-cache-user-check.php');
+				do_action('wpsc_add_plugin', '../app/plugins/restricted-site-access/cache_override.php');
 			}
 		});
+
+		add_action( 'set_logged_in_cookie', array( __CLASS__, 'add_rsa_logged_cookie'), 10, 6);
+		// To Remove Cookie
+		add_action( 'wp_logout', array( __CLASS__, 'remove_rsa_logged_cookie') );
 
 		add_action( 'parse_request', array( __CLASS__, 'restrict_access' ), 1 );
 		add_action( 'admin_init', array( __CLASS__, 'admin_init' ), 1 );
@@ -315,7 +321,6 @@ class Restricted_Site_Access {
 	 * @codeCoverageIgnore
 	 */
 	public static function restrict_access( $wp ) {
-
 		$results = self::restrict_access_check( $wp );
 
 		if ( is_array( $results ) && ! empty( $results ) ) {
@@ -375,7 +380,7 @@ class Restricted_Site_Access {
 		}
 
 		// check for the allow list, if its empty block everything.
-		if(RSA_IP_AUTHORIZED === true) {
+		if(defined('RSA_IP_AUTHORIZED') && RSA_IP_AUTHORIZED === true) {
 			return;
 		} 
 		elseif ( count( $allowed_ips ) > 0) {
@@ -1503,30 +1508,12 @@ class Restricted_Site_Access {
 	 * @return boolean true if the ip is in this range / false if not.
 	 */
 	public static function ip_in_range( $ip, $range ) {
-		// var_dump($ip);
-		// print('<br>');
-		// var_dump($range);
-		// print('<br>');
 		$address = \IPLib\Factory::parseAddressString($ip);
 		$range = \IPLib\Factory::parseRangeString($range);
-		// print('parseRangeString');
-		// var_dump(\IPLib\Factory::parseRangeString($range));
-		// print('<br>');
 		if($ip !== null && $range !== null) {
 			return($address->matches($range));
 		}
-		// print_r($address->matches($range));
-		// exit;
-		// if ( strpos( $range, '/' ) === false ) {
-		// 	$range .= '/32';
-		// }
-		// // $range is in IP/CIDR format eg 127.0.0.1/24
-		// list( $range, $netmask ) = explode( '/', $range, 2 );
-		// $range_decimal           = ip2long( $range );
-		// $ip_decimal              = ip2long( $ip );
-		// $wildcard_decimal        = pow( 2, ( 32 - $netmask ) ) - 1;
-		// $netmask_decimal         = ~ $wildcard_decimal;
-		// return ( ( $ip_decimal & $netmask_decimal ) === ( $range_decimal & $netmask_decimal ) );
+		return;
 	}
 
 	/**
@@ -1775,6 +1762,21 @@ class Restricted_Site_Access {
 			update_option( 'rsa_options', self::sanitize_options( self::$rsa_options ) );
 		}
 	}
+
+	public static function add_rsa_logged_cookie($logged_in_cookie, $expire, $expiration, $user_id, $scheme, $token) {
+		$user = get_user_by('id', $user_id);
+		$cookie_content = ':' . $user->user_login . ':' . $expiration;
+
+		// Encrypt
+		if(defined('RSA_LOGGED_HASH') && RSA_LOGGED_HASH !== false) {
+			$cookie = hash_hmac('sha256', $cookie_content, RSA_LOGGED_HASH) . $cookie_content;
+			setcookie( 'rsa_logged_in', $cookie, $expiration, COOKIEPATH, COOKIE_DOMAIN, true, true );
+		}
+	}
+
+	public static function remove_rsa_logged_cookie() {
+	    setcookie( 'rsa_logged_in', '', -1000000 );
+	}
 }
 
 if ( ! defined( 'RSA_IS_NETWORK' ) ) {
@@ -1846,3 +1848,34 @@ if ( ! function_exists( 'inet_pton' ) ) :
 	}
 
 endif;
+
+/* Plugin W3TC */
+if(defined('W3TC')) {
+
+	/**
+	 * Class autoloader
+	 *
+	 * @param string  $class Classname
+	 */
+	function w3tc_rsa_class_autoload( $class ) {
+		if ( substr( $class, 0, 9 ) == 'RSA\W3TC\\' ) {
+			$filename = dirname( __FILE__ ) . DIRECTORY_SEPARATOR . 'inc' . DIRECTORY_SEPARATOR . 'w3tc' . DIRECTORY_SEPARATOR .
+				substr( $class, 9 ) . '.php';
+
+			if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+				if ( !file_exists( $filename ) ) {
+					debug_print_backtrace();
+				}
+			}
+
+			require $filename;
+		}
+	}
+
+	spl_autoload_register( 'w3tc_rsa_class_autoload' );
+
+	add_action( 'w3tc_extensions', array(
+			'RSA\W3TC\Extension_RSACacheOverride_Admin',
+			'w3tc_extensions'
+		), 10, 2 );
+}
