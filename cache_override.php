@@ -93,8 +93,7 @@ class CacheOverride {
 		$options = array();
 
 		$options = [
-			'redirect_url' => defined('RSA_REDIRECT') ? RSA_REDIRECT : '',
-			'approach' => defined('RSA_REDIRECT') ? 2 : 1,
+			'redirect_url' => RSA_REDIRECT,
 			'allowed' => defined('RSA_IP_WHITELIST') ? explode('|', RSA_IP_WHITELIST) : ''
 		];
 
@@ -117,25 +116,18 @@ class CacheOverride {
 	         * This conditional prevents a redirect loop if the redirect URL
 	         * belongs to the same domain.
 	         */
-	        if ( 2 === self::$rsa_options['approach'] ) {
-	        	$url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
-	            $redirect_url_without_scheme = rtrim( preg_replace( '(^https?://)', '', $results['url'] ), '/\\' ) . '/';
-	            $current_url_without_scheme  = rtrim(preg_replace( '(^https?://)', '', parse_url( $url, PHP_URL_HOST ) ), '/\\' ) . '/';
-	            $current_url_path            = rtrim(parse_url( $url, PHP_URL_PATH ), '/\\' ) . '/';
+        	$url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+            $redirect_url_without_scheme = rtrim( preg_replace( '(^https?://)', '', $results['url'] ), '/\\' ) . '/';
+            $current_url_without_scheme  = rtrim(preg_replace( '(^https?://)', '', parse_url( $url, PHP_URL_HOST ) ), '/\\' ) . '/';
+            $current_url_path            = rtrim(parse_url( $url, PHP_URL_PATH ), '/\\' ) . '/';
 
-	            if ( ( $current_url_path === $redirect_url_without_scheme ) || ( $redirect_url_without_scheme === $current_url_without_scheme ) ) {
-	                return;
-	            }
-	        }
+            if ( ( $current_url_path === $redirect_url_without_scheme ) || ( $redirect_url_without_scheme === $current_url_without_scheme ) ) {
+                return;
+            }
 
 			// Don't redirect during unit tests.
 			if ( ! empty( $results['url'] ) && ! defined( 'PHP_UNIT_TESTS_ENV' ) ) {
-				if(function_exists('w3tc_config')) {
-					define('DONOTCACHEPAGE', true);
-				} else {
-					define('WPSC_SERVE_DISABLED', true);
-					return;
-				}
+				define('DONOTCACHEPAGE', true);
 				header( 'Location: ' . $results['url'], true, $results['code'] ); // phpcs:ignore WordPress.Security.SafeRedirect.wp_redirect_wp_redirect
 				die();
 			}
@@ -235,10 +227,8 @@ class CacheOverride {
     	$url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
 
     	$is_login = false;
-    	if(defined('RSA_LOGIN_URL')) {
-    		$is_login = strpos($_SERVER['REQUEST_URI'], '/'. RSA_LOGIN_URL);
-			$is_login = $is_login === false ? $is_login : true;
-    	}
+		$is_login = strpos($_SERVER['REQUEST_URI'], '/'. RSA_LOGIN_URL);
+		$is_login = $is_login === false ? $is_login : true;
 		$checks = is_admin() || $is_login || $user_check || 2 !== (int) $blog_public || ( defined( 'WP_INSTALLING' ) && isset( $_GET['key'] ) ); // phpcs:ignore WordPress.Security.NonceVerification
 
 		return ! $checks;
@@ -352,6 +342,6 @@ class CacheOverride {
 }
 
 // && (function_exists('wpsc_get_auth_cookies') || defined('W3TC') ) 
-if(WP_CACHE === true && defined('RSA_FORCE_RESTRICTION') && RSA_FORCE_RESTRICTION === true && defined('RSA_REDIRECT') && RSA_FORCE_RESTRICTION === true && defined('RSA_LOGIN_URL') && RSA_LOGIN_URL === true) {
+if(WP_CACHE === true && defined('RSA_FORCE_RESTRICTION') && RSA_FORCE_RESTRICTION === true && defined('RSA_REDIRECT') && RSA_REDIRECT !== '' && defined('RSA_LOGIN_URL') && RSA_LOGIN_URL !== '') {
 	CacheOverride::get_instance();
 }
