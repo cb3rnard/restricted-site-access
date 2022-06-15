@@ -110,13 +110,13 @@ class CacheOverride {
 	public static function restrict_access(){
 	    $results = self::restrict_access_check();
 
-	    if ( is_array( $results ) && ! empty( $results ) ) {
+	    if ( is_array( $results ) && ! empty( $results ) && isset($_SERVER['HTTP_HOST'])) {
 
 	        /**
 	         * This conditional prevents a redirect loop if the redirect URL
 	         * belongs to the same domain.
 	         */
-        	$url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER['HTTP_HOST']$_SERVER['REQUEST_URI']";
+        	$url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
             $redirect_url_without_scheme = rtrim( preg_replace( '(^https?://)', '', $results['url'] ), '/\\' ) . '/';
             $current_url_without_scheme  = rtrim(preg_replace( '(^https?://)', '', parse_url( $url, PHP_URL_HOST ) ), '/\\' ) . '/';
             $current_url_path            = rtrim(parse_url( $url, PHP_URL_PATH ), '/\\' ) . '/';
@@ -224,13 +224,15 @@ class CacheOverride {
 			$user_check = ($check_time && $check_hash);
 		}
 		
-    	$url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER['HTTP_HOST']$_SERVER['REQUEST_URI']";
-
     	$is_login = false;
-		$is_login = strpos($_SERVER['REQUEST_URI'], '/'. RSA_LOGIN_URL);
-		$is_login = $is_login === false ? $is_login : true;
-		$checks = is_admin() || $is_login || $user_check || 2 !== (int) $blog_public || ( defined( 'WP_INSTALLING' ) && isset( $_GET['key'] ) ); // phpcs:ignore WordPress.Security.NonceVerification
+		if(isset($_SERVER['HTTP_HOST'])) {
+	    	$url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
 
+			$is_login = strpos($_SERVER['REQUEST_URI'], '/'. RSA_LOGIN_URL);
+			$is_login = $is_login === false ? $is_login : true;
+
+		}
+		$checks = is_admin() || $is_login || $user_check || 2 !== (int) $blog_public || ( defined( 'WP_INSTALLING' ) && isset( $_GET['key'] ) ); // phpcs:ignore WordPress.Security.NonceVerification
 		return ! $checks;
 	}
 
