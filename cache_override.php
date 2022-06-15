@@ -116,7 +116,7 @@ class CacheOverride {
 	         * This conditional prevents a redirect loop if the redirect URL
 	         * belongs to the same domain.
 	         */
-        	$url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+        	$url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER['HTTP_HOST']$_SERVER['REQUEST_URI']";
             $redirect_url_without_scheme = rtrim( preg_replace( '(^https?://)', '', $results['url'] ), '/\\' ) . '/';
             $current_url_without_scheme  = rtrim(preg_replace( '(^https?://)', '', parse_url( $url, PHP_URL_HOST ) ), '/\\' ) . '/';
             $current_url_path            = rtrim(parse_url( $url, PHP_URL_PATH ), '/\\' ) . '/';
@@ -224,7 +224,7 @@ class CacheOverride {
 			$user_check = ($check_time && $check_hash);
 		}
 		
-    	$url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+    	$url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER['HTTP_HOST']$_SERVER['REQUEST_URI']";
 
     	$is_login = false;
 		$is_login = strpos($_SERVER['REQUEST_URI'], '/'. RSA_LOGIN_URL);
