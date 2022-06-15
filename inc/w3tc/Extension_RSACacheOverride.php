@@ -28,6 +28,7 @@ $p = new Extension_RSACacheOverride();
 $p->run();
 
 if ( is_admin() ) {
+	require_once(__DIR__) . '/Extension_RSACacheOverride_Admin.php';
 	$p = new Extension_RSACacheOverride_Admin();
 	$p->run();
 }
