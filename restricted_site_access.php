@@ -108,6 +108,18 @@ class Restricted_Site_Access {
 
 		add_filter( 'pre_option_blog_public', array( __CLASS__, 'pre_option_blog_public' ), 10, 1 );
 		add_filter( 'pre_site_option_blog_public', array( __CLASS__, 'pre_option_blog_public' ), 10, 1 );
+		// Disable plugin update notice (because of forked)
+		add_filter( 'site_transient_update_plugins', array( __CLASS__, 'remove_update_notifications'), 10, 1 );
+	}
+
+	// remove update notice for forked plugins
+	public static function remove_update_notifications($value) {
+
+	    if ( isset( $value ) && is_object( $value ) ) {
+	        unset( $value->response[ plugin_basename(__FILE__) ] );
+	    }
+
+	    return $value;
 	}
 
 	/**
