@@ -4,6 +4,32 @@ All notable changes to this project will be documented in this file, per [the Ke
 
 ## [Unreleased] - TBD
 
+## [7.5.1] - 2024-07-XX
+**Note that this version bumps the WordPress minimum supported version from 5.7 to 6.4.**
+
+### Changed
+- Bump WordPress "tested up to" version 6.6 (props [@sudip-md](https://github.com/sudip-md), [@jeffpaul](https://github.com/jeffpaul), [@dkotter](https://github.com/dkotter) via [#313](https://github.com/10up/restricted-site-access/pull/313), [#318](https://github.com/10up/restricted-site-access/pull/318)).
+- Bump WordPress minimum from 5.7 to 6.4 (props [@sudip-md](https://github.com/sudip-md), [@jeffpaul](https://github.com/jeffpaul), [@dkotter](https://github.com/dkotter) via [#313](https://github.com/10up/restricted-site-access/pull/313), [#318](https://github.com/10up/restricted-site-access/pull/318)).
+
+### Security
+- Bump `tj-actions/changed-files` from 32 to 41 (props [@dependabot](https://github.com/apps/dependabot), [@iamdharmesh](https://github.com/iamdharmesh) via [#297](https://github.com/10up/restricted-site-access/pull/297)).
+- Bump `express` from 4.18.2 to 4.19.2 (props [@dependabot](https://github.com/apps/dependabot), [@Sidsector9](https://github.com/Sidsector9) via [#312](https://github.com/10up/restricted-site-access/pull/312)).
+- Bump `follow-redirects` from 1.15.5 to 1.15.6 (props [@dependabot](https://github.com/apps/dependabot), [@Sidsector9](https://github.com/Sidsector9) via [#312](https://github.com/10up/restricted-site-access/pull/312)).
+- Bump `webpack-dev-middleware` from 5.3.3 to 5.3.4 (props [@dependabot](https://github.com/apps/dependabot), [@Sidsector9](https://github.com/Sidsector9) via [#312](https://github.com/10up/restricted-site-access/pull/312)).
+- Bump `braces` from 3.0.2 to 3.0.3 (props [@dependabot](https://github.com/apps/dependabot), [@iamdharmesh](https://github.com/iamdharmesh) via [#319](https://github.com/10up/restricted-site-access/pull/319)).
+- Bump `pac-resolver` from 7.0.0 to 7.0.1 (props [@dependabot](https://github.com/apps/dependabot), [@iamdharmesh](https://github.com/iamdharmesh) via [#319](https://github.com/10up/restricted-site-access/pull/319)).
+- Bump `socks` from 2.7.1 to 2.8.3 (props [@dependabot](https://github.com/apps/dependabot), [@iamdharmesh](https://github.com/iamdharmesh) via [#319](https://github.com/10up/restricted-site-access/pull/319)).
+- Bump `ws` from 7.5.9 to 7.5.10 (props [@dependabot](https://github.com/apps/dependabot), [@iamdharmesh](https://github.com/iamdharmesh) via [#319](https://github.com/10up/restricted-site-access/pull/319)).
+
+### Developer
+- Clean up NPM dependencies and update node to v20 (props [@Sidsector9](https://github.com/Sidsector9), [@dkotter](https://github.com/dkotter) via [#303](https://github.com/10up/restricted-site-access/pull/303)).
+- Update `CODEOWNERS` (props [@jeffpaul](https://github.com/jeffpaul), [@dkotter](https://github.com/dkotter) via [#300](https://github.com/10up/restricted-site-access/pull/300)).
+- Disabled auto sync pull requests with target branch (props [@iamdharmesh](https://github.com/iamdharmesh), [@jeffpaul](https://github.com/jeffpaul) via [#307](https://github.com/10up/restricted-site-access/pull/307)).
+- Upgrade `download-artifact` from v3 to v4 (props [@iamdharmesh](https://github.com/iamdharmesh), [@jeffpaul](https://github.com/jeffpaul) via [#309](https://github.com/10up/restricted-site-access/pull/309)).
+- Replaced [lee-dohm/no-response](https://github.com/lee-dohm/no-response) with [actions/stale](https://github.com/actions/stale) to help with closing no-response/stale issues (props [@jeffpaul](https://github.com/jeffpaul), [@dkotter](https://github.com/dkotter) via [#310](https://github.com/10up/restricted-site-access/pull/310)).
+- Added a "Testing" section in the `CONTRIBUTING.md` file (props [@kmgalanakis](https://github.com/kmgalanakis), [@jeffpaul](https://github.com/jeffpaul) via [#314](https://github.com/10up/restricted-site-access/pull/314)).
+- Removed `ip` dependency (props [@dependabot](https://github.com/apps/dependabot), [@Sidsector9](https://github.com/Sidsector9), [@iamdharmesh](https://github.com/iamdharmesh) via [#312](https://github.com/10up/restricted-site-access/pull/312), [#319](https://github.com/10up/restricted-site-access/pull/319)).
+
 ## [7.5.0] - 2023-12-14
 **Note:** this release changes the default behavior for new installs in regards to IP detection. This shouldn't impact existing installs but there are two filters that can be used to change this behavior. See the [readme](https://github.com/10up/restricted-site-access#how-secure-is-this-plug-in) for full details.
 
@@ -336,6 +362,7 @@ All notable changes to this project will be documented in this file, per [the Ke
 - Initial public release
 
 [Unreleased]: https://github.com/10up/restricted-site-access/compare/trunk...develop
+[7.5.1]: https://github.com/10up/restricted-site-access/compare/7.5.0...7.5.1
 [7.5.0]: https://github.com/10up/restricted-site-access/compare/7.4.1...7.5.0
 [7.4.1]: https://github.com/10up/restricted-site-access/compare/7.4.0...7.4.1
 [7.4.0]: https://github.com/10up/restricted-site-access/compare/7.3.5...7.4.0
