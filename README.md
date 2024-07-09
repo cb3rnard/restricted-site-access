@@ -4,25 +4,6 @@
 
 [![Support Level](https://img.shields.io/badge/support-stable-blue.svg)](#support-level) [![E2E Tests](https://github.com/10up/restricted-site-access/actions/workflows/cypress.yml/badge.svg)](https://github.com/10up/restricted-site-access/actions/workflows/cypress.yml) [![PHPUnit](https://github.com/10up/restricted-site-access/actions/workflows/phpunit.yml/badge.svg)](https://github.com/10up/restricted-site-access/actions/workflows/phpunit.yml) [![Release Version](https://img.shields.io/github/release/10up/restricted-site-access.svg)](https://github.com/10up/restricted-site-access/releases/latest) ![WordPress tested up to version](https://img.shields.io/wordpress/plugin/tested/restricted-site-access?label=WordPress) [![GPLv2 License](https://img.shields.io/github/license/10up/restricted-site-access.svg)](https://github.com/10up/restricted-site-access/blob/develop/LICENSE.md)
 
-## Table of Contents
-* [Features](#features)
-* [Installation](#installation)
-* [FAQs](#frequently-asked-questions)
-  * [Where do I change the restriction settings?](#where-do-i-change-the-restriction-settings)
-  * [It’s not working! My site is wide open!](#its-not-working-my-site-is-wide-open)
-  * [How do I allow access to specific parts of my site?](#how-do-i-allow-access-to-specific-pages-or-parts-of-my-site)
-  * [How secure is this plug-in?](#how-secure-is-this-plug-in)
-  * [Why can't logged-in multisite users see all my sites?](#why-cant-logged-in-users-see-all-the-sites-on-my-multisite-instance)
-  * [Is there a way to configure this with WP-CLI?](#is-there-a-way-to-configure-this-with-wp-cli)
-  * [How can I programmatically define whitelisted IPs?](#how-can-i-programmatically-define-whitelisted-ips)
-  * [Is there a constant to control my site restriction?](#is-there-a-constant-i-can-set-to-ensure-my-site-is-or-is-not-restricted)
-  * [Can I provide access to my site based on custom HTTP headers?](#can-i-provide-access-to-my-site-based-on-custom-http-headers)
-  * [What does 'Discourage search engines from indexing this site' do?](#what-does-discourage-search-engines-from-indexing-this-site-do)
-  * [What does 'Restrict site access to visitors who are logged in or allowed by IP address' do?](#what-does-restrict-site-access-to-visitors-who-are-logged-in-or-allowed-by-ip-address-do)
-* [Support](#support-level)
-* [Changelog](#changelog)
-* [Contributing](#contributing)
-
 ## Features
 
 Limit access your site to visitors who are logged in or accessing the site from a set of specified IP addresses. Send restricted visitors to the log in page, redirect them, or display a message or page. A great solution for Extranets, publicly hosted Intranets, or parallel development / staging sites.
