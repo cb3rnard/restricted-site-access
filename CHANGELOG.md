@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file, per [the Ke
 
 ## [Unreleased] - TBD
 
-## [7.5.1] - 2024-07-XX
+## [7.5.1] - 2024-07-09
 **Note that this version bumps the WordPress minimum supported version from 5.7 to 6.4.**
 
 ### Changed

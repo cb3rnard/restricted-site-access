@@ -202,7 +202,7 @@ When this option is activated, it serves as a barrier to all visitors except tho
 
 == Changelog ==
 
-= 7.5.1 - 2024-07-XX =
+= 7.5.1 - 2024-07-09 =
 
 **Note that this version bumps the WordPress minimum supported version from 5.7 to 6.4.**
 
