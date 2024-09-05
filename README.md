@@ -1,8 +1,12 @@
 # Restricted Site Access
 
-> Limit access to visitors who are logged in or allowed by IP addresses. Includes many options for handling blocked visitors.
+![Restricted Site Access](https://github.com/10up/restricted-site-access/blob/develop/.wordpress-org/banner-1544x500.png)
 
-[![Support Level](https://img.shields.io/badge/support-stable-blue.svg)](#support-level) [![E2E Tests](https://github.com/10up/restricted-site-access/actions/workflows/cypress.yml/badge.svg)](https://github.com/10up/restricted-site-access/actions/workflows/cypress.yml) [![PHPUnit](https://github.com/10up/restricted-site-access/actions/workflows/phpunit.yml/badge.svg)](https://github.com/10up/restricted-site-access/actions/workflows/phpunit.yml) [![Release Version](https://img.shields.io/github/release/10up/restricted-site-access.svg)](https://github.com/10up/restricted-site-access/releases/latest) ![WordPress tested up to version](https://img.shields.io/wordpress/plugin/tested/restricted-site-access?label=WordPress) [![GPLv2 License](https://img.shields.io/github/license/10up/restricted-site-access.svg)](https://github.com/10up/restricted-site-access/blob/develop/LICENSE.md)
+[![Support Level](https://img.shields.io/badge/support-stable-blue.svg)](#support-level) ![WordPress tested up to version](https://img.shields.io/wordpress/plugin/tested/restricted-site-access?label=WordPress) [![GPLv2 License](https://img.shields.io/github/license/10up/restricted-site-access.svg)](https://github.com/10up/restricted-site-access/blob/develop/LICENSE.md) [![Dependency Review](https://github.com/10up/restricted-site-access/actions/workflows/dependency-review.yml/badge.svg)](https://github.com/10up/restricted-site-access/actions/workflows/dependency-review.yml)
+
+[![E2E Tests](https://github.com/10up/restricted-site-access/actions/workflows/cypress.yml/badge.svg)](https://github.com/10up/restricted-site-access/actions/workflows/cypress.yml) [![PHPUnit](https://github.com/10up/restricted-site-access/actions/workflows/phpunit.yml/badge.svg)](https://github.com/10up/restricted-site-access/actions/workflows/phpunit.yml) [![PHP Linting](https://github.com/10up/restricted-site-access/actions/workflows/php-compatibility.yml/badge.svg)](https://github.com/10up/restricted-site-access/actions/workflows/php-compatibility.yml) [![ESLint](https://github.com/10up/restricted-site-access/actions/workflows/js-lint.yml/badge.svg)](https://github.com/10up/restricted-site-access/actions/workflows/js-lint.yml) [![CodeQL](https://github.com/10up/restricted-site-access/actions/workflows/github-code-scanning/codeql/badge.svg)](https://github.com/10up/restricted-site-access/actions/workflows/github-code-scanning/codeql)
+
+> Limit access to visitors who are logged in or allowed by IP addresses. Includes many options for handling blocked visitors.
 
 ## Features
 
@@ -180,9 +184,8 @@ Make sure you add it before the `/* That's all, stop editing! Happy blogging. */
 Please note that setting `RSA_FORCE_RESTRICTION` will override `RSA_FORBID_RESTRICTION` if both are set.
 
 ### Can I provide access to my site based on custom HTTP headers?
-You can use the `restricted_site_access_is_restricted` filter hook to allow access based on custom headers.
-The custom header you want to allow should be present in the request and should contain a unique value. If needed, you can allow more than one header.
-If these header/value pairs are ever compromised, you should change the accepted values in order to protect your site.
+
+You can use the `restricted_site_access_is_restricted` filter hook to allow access based on custom headers. The custom header you want to allow should be present in the request and should contain a unique value. If needed, you can allow more than one header. If these header/value pairs are ever compromised, you should change the accepted values in order to protect your site.
 
 See below for an example code snippet you can utilize:
 
