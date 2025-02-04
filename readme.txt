@@ -202,6 +202,19 @@ When this option is activated, it serves as a barrier to all visitors except tho
 
 == Changelog ==
 
+= 7.5.2 - 2025-02-05 =
+
+**Note that this version bumps the WordPress minimum supported version from 6.4 to 6.5.**
+
+* **Changed:** Bump WordPress "tested up to" version 6.7 (props [@sudip-md](https://github.com/sudip-md), [@jeffpaul](https://github.com/jeffpaul), [@mehidi258](https://github.com/mehidi258) via [#335](https://github.com/10up/restricted-site-access/pull/335), [#336](https://github.com/10up/restricted-site-access/pull/336)).
+* **Changed:** Bump WordPress minimum from 6.4 to 6.5 (props [@sudip-md](https://github.com/sudip-md), [@jeffpaul](https://github.com/jeffpaul), [@mehidi258](https://github.com/mehidi258) via [#335](https://github.com/10up/restricted-site-access/pull/335), [#336](https://github.com/10up/restricted-site-access/pull/336)).
+* **Fixed:** Add missing textdomain to a few strings (props [@NekoJonez](https://github.com/NekoJonez), [@dkotter](https://github.com/dkotter) via [#338](https://github.com/10up/restricted-site-access/pull/338)).
+* **Security:** Bump `axios` from 1.6.7 to 1.7.4 (props [@dependabot](https://github.com/apps/dependabot), [@faisal-alvi](https://github.com/faisal-alvi) via [#326](https://github.com/10up/restricted-site-access/pull/326)).
+* **Security:** Bump `webpack` from 5.90.0 to 5.94.0 (props [@dependabot](https://github.com/apps/dependabot), [@faisal-alvi](https://github.com/faisal-alvi) via [#327](https://github.com/10up/restricted-site-access/pull/327)).
+* **Security:** Bump `ws` from 7.5.10 to 8.18.0 and `@wordpress/scripts` from 27.1.0 to 29.0.0 (props [@dependabot](https://github.com/apps/dependabot), [@faisal-alvi](https://github.com/faisal-alvi) via [#328](https://github.com/10up/restricted-site-access/pull/328)).
+* **Security:** Bump `express` from 4.19.2 to 4.21.2, `send` from 0.18.0 to 0.19.0 and `serve-static` from 1.15.0 to 1.16.2 (props [@dependabot](https://github.com/apps/dependabot), [@peterwilsoncc](https://github.com/peterwilsoncc) via [#340](https://github.com/10up/restricted-site-access/pull/340)).
+* **Security:** Bump `@wordpress/e2e-test-utils-playwright` from 1.7.0 to 1.16.0, `nanoid` from 3.3.7 to 3.3.8, `mocha` from 10.2.0 to 11.0.1 and removes `cookie` (props [@dependabot](https://github.com/apps/dependabot), [@peterwilsoncc](https://github.com/peterwilsoncc) via [#341](https://github.com/10up/restricted-site-access/pull/341)).
+
 = 7.5.1 - 2024-07-09 =
 
 **Note that this version bumps the WordPress minimum supported version from 5.7 to 6.4.**
@@ -263,6 +276,9 @@ When this option is activated, it serves as a barrier to all visitors except tho
 [View historical changelog details here](https://github.com/10up/restricted-site-access/blob/develop/CHANGELOG.md).
 
 == Upgrade Notice ==
+
+= 7.5.2 =
+This version bumps the WordPress minimum supported version from 6.4 to 6.5.
 
 = 7.5.1 =
 This version bumps the WordPress minimum supported version from 5.7 to 6.4.
