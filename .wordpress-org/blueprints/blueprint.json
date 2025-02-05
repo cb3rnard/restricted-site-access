@@ -5,16 +5,14 @@
 		"php": "7.4",
 		"wp": "latest"
 	},
-	"phpExtensionBundles": ["kitchen-sink"],
 	"steps": [
 		{
 			"step": "login",
-			"username": "admin",
-			"password": "password"
+			"username": "admin"
 		},
 		{
 			"step": "installPlugin",
-			"pluginZipFile": {
+			"pluginData": {
 				"resource": "wordpress.org\/plugins",
 				"slug": "restricted-site-access"
 			},
@@ -34,7 +32,7 @@
 						"Example of an allowed IP address"
 					]
 				},
-				"rsa_activation_version": "7.5.0"
+				"rsa_activation_version": "7.5.2"
 			}
 		}
 	]
